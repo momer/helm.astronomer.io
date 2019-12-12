@@ -346,5 +346,29 @@ data:
           - source_labels: [__name__]
             regex: 'airflow_dag_.*'
             action: drop
-
+            # Explictly whitelist some metrics we use
+          - source_labels: [__name__]
+            regex: '^airflow_dagrun_dependency_check_sum$'
+            action: keep
+          - source_labels: [__name__]
+            regex: '^airflow_dagrun_dependency_check_count$'
+            action: keep
+          - source_labels: [__name__]
+            regex: '^airflow_dag_processing_total_parse_time$'
+            action: keep
+          - source_labels: [__name__]
+            regex: '^airflow_dagbag_size$'
+            action: keep
+          - source_labels: [__name__]
+            regex: '^airflow_dag_processing_processor_timeouts$'
+            action: keep
+          - source_labels: [__name__]
+            regex: '^airflow_dag_processing_processes$'
+            action: keep
+          - source_labels: [__name__]
+            regex: '^airflow_dag_processing_last_runtime$'
+            action: keep
+          - source_labels: [__name__]
+            regex: '^airflow_dag_processing_last_run_seconds_ago$'
+            action: keep
       {{- end }}
