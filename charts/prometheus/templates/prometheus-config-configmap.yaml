@@ -126,7 +126,7 @@ data:
       {{- end }}
 
       - job_name: kube-state
-        scrape_interval: 5s # Faster scrape to power dashboards
+        scrape_interval: 5s
         kubernetes_sd_configs:
           - role: service
             namespaces:
@@ -184,7 +184,7 @@ data:
             target_label: __address__
 
       - job_name: airflow
-        scrape_interval: 5s # Faster scrape to power dashboards
+        scrape_interval: 5s
         kubernetes_sd_configs:
           - role: service
           {{- if .Values.global.singleNamespace }}
@@ -314,4 +314,37 @@ data:
             regex: "^container_network_.*;(.*)-(.*)-([0-9]+)$"
             replacement: "$3"
             target_label: component_instance
+
+            # Drop metrics that are task or dag specific
+          - source_labels: [__name__]
+            regex: 'airflow_task_instance_created_.*'
+            action: drop
+          - source_labels: [__name__]
+            regex: 'airflow_task_removed_from_dag_.*'
+            action: drop
+          - source_labels: [__name__]
+            regex: 'airflow_task_restored_to_dag_.*'
+            action: drop
+          - source_labels: [__name__]
+            regex: 'airflow_dagrun_duration_success_.*'
+            action: drop
+          - source_labels: [__name__]
+            regex: 'airflow_dagrun_duration_failed_.*'
+            action: drop
+          - source_labels: [__name__]
+            regex: 'airflow_dagrun_dependency_check_.*'
+            action: drop
+          - source_labels: [__name__]
+            regex: 'airflow_dagrun_schedule_delay_.*'
+            action: drop
+          - source_labels: [__name__]
+            regex: 'airflow_dagrun_duration_success_.*'
+            action: drop
+          - source_labels: [__name__]
+            regex: 'airflow_dagrun_duration_failed_.*'
+            action: drop
+          - source_labels: [__name__]
+            regex: 'airflow_dag_.*'
+            action: drop
+
       {{- end }}
