@@ -183,6 +183,7 @@ data:
             regex: ([^:]+)(?::\d+)?;(\d+)
             replacement: $1:$2
             target_label: __address__
+        metric_relabel_configs:
           - source_labels: [__name__]
             regex: 'fluentd_tail_file_.*'
             action: drop
