@@ -126,7 +126,7 @@ data:
       {{- end }}
 
       - job_name: kube-state
-        scrape_interval: 5s
+        scrape_interval: 5s # Faster scrape to power dashboards
         kubernetes_sd_configs:
           - role: service
             namespaces:
