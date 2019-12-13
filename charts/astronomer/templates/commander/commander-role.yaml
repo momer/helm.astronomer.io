@@ -27,4 +27,12 @@ rules:
   - update
   - delete
   - deletecollection
+{{- if $singleNamespace }}
+- apiGroups:
+    - ""
+  resources:
+  - namespaces
+  verbs:
+  - get
+{{- end }}
 {{- end }}
