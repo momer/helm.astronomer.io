@@ -6,6 +6,14 @@ nodeSelector: {}
 affinity: {}
 tolerations: []
 
+# Prometheus is not designed to be horizontally scalable behind a single load
+# balancer. This configuration will increase the replicas in the Prometheus
+# StatefulSet, and assign a different Service to each Pod. In this way,
+# applications with high availability requirements may handle retrying for
+# missing data on the other Service(s). The StatefulSet will manage the Pods
+# such that only one is replaced at a time.
+replicas: 1
+
 images:
   init:
     repository: astronomerinc/ap-base
