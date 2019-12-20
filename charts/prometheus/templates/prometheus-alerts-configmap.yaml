@@ -243,16 +243,29 @@ data:
             summary: "A container in the Astronomer platform namespace is stuck crash looping"
             description: {{ printf "%q" "The container {{ $labels.container }} in pod {{ $labels.pod }} is stuck crash looping" }}
 
-        - alert: KubePodNotReady
+        - alert: KubePodNotReadyInDeployment
           expr: |
-            sum by (namespace, pod) (kube_pod_status_phase{job="kube-state", phase!~"Running|Succeeded"}) > 0
+            sum by (namespace, pod) (kube_pod_status_phase{namespace=~".*-.*-.*-[0-9]{4}", job="kube-state", phase=~"Pending|Unknown"}) > 0
+          for: 1h
+          labels:
+            tier: platform
+            component: pod
+            severity: warning
+          annotations:
+            summary: "Deployment pod in non-ready state for more than 1 hour. Check on it next buisness day."
+            description: {{ printf "%q" "{{ $labels.pod }} in namespace {{ $labels.namespace }} has been in a non-ready state for longer than an hour." }}
+
+        - alert: KubePodNotReadyInPlatform
+          expr: |
+            sum by (namespace, pod) (kube_pod_status_phase{namespace="{{ .Release.Name }}", job="kube-state", phase=~"Pending|Unknown"}) > 0
           for: 15m
           labels:
             tier: platform
             component: pod
+            severity: urgent
           annotations:
             summary: "Pod in non-ready state for more than 15 minutes"
-            description: {{ printf "%q" "Pod {{ $labels.namespace }}/{{ $labels.pod }} has been in a non-ready state for longer than 15 minutes." }}
+            description: {{ printf "%q" "{{ $labels.pod }} has been in a non-ready state for longer than 15 minutes." }}
 
         - alert: NginxIngressDown
           expr: |
