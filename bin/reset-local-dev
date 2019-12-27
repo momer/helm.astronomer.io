@@ -8,8 +8,8 @@ REPO_DIR=$DIR/../
 source $REPO_DIR/bin/setup-kind
 
 echo "Deploying Astronomer..."
-helm install -f configs/local-dev.yaml \
-  --namespace astronomer -n astronomer \
+helm3 install -f configs/local-dev.yaml \
+  --namespace astronomer astronomer \
   $REPO_DIR
 
 echo ''

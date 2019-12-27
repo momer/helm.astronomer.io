@@ -49,11 +49,6 @@ kubectl get nodes
 echo "Creating Tiller service account..."
 kubectl apply -f ${REPO_DIR}.circleci/tiller-rbac.yaml
 
-# Install Tiller, set up Helm
-echo "Installing tiller in the KinD cluster..."
-helm init --service-account tiller --wait > /dev/null 2>&1
-echo "Tiller installed."
-
 echo "Creating namespace 'astronomer'"
 kubectl create namespace astronomer
 
@@ -64,7 +59,7 @@ kubectl create secret tls astronomer-tls \
   --namespace astronomer
 
 echo "Deploying postgresql..."
-helm install -n postgresql --namespace astronomer --wait \
+helm3 install postgresql --namespace astronomer --wait \
   --set image.tag=9.6.15-centos-7-r34 \
   --set postgresqlPassword=notactuallysecret \
   stable/postgresql > /dev/null 2>&1
