@@ -20,3 +20,4 @@ data:
   server-name-hash-bucket-size: {{ .Values.serverNameHashBucketSize | quote }}
   enable-vts-status: "true"
   server-tokens: "false"
+  use-forwaded-headers: "true"

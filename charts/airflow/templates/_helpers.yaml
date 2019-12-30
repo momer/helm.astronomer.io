@@ -79,11 +79,11 @@
 {{- end }}
 
 {{ define "airflow_url" -}}
-{{ .Release.Name }}-airflow.{{ .Values.ingress.baseDomain }}
+app.datarouter.ai
 {{- end }}
 
 {{ define "flower_url" -}}
-{{ .Release.Name }}-flower.{{ .Values.ingress.baseDomain }}
+app.datarouter.ai
 {{- end }}
 
 # This helper will change when customers deploy a new image.

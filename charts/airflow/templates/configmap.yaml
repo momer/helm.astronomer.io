@@ -26,7 +26,8 @@ data:
 {{- end }}
 
     [webserver]
-    base_url = {{ printf "https://%s" (include "airflow_url" .) }}
+    base_url = {{ printf "https://%s/deployments/%s/airflow" (include "airflow_url" .) .Release.Name }}
+    enable_proxy_fix = True
     expose_config = True
     rbac = True
 

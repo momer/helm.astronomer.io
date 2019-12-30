@@ -35,20 +35,24 @@ spec:
   {{- end }}
       hosts:
         - {{- include "airflow_url" . | indent 1 }}
+{{- if eq .Values.executor "CeleryExecutor" }}
         - {{- include "flower_url" . | indent 1 }}
+{{- end }}
   rules:
     - host: {{- include "airflow_url" . | indent 1 }}
       http:
         paths:
-          - path: /
+          - path: /deployments/{{ .Release.Name }}/airflow
             backend:
               serviceName: {{ .Release.Name }}-webserver
               servicePort: airflow-ui
+{{- if eq .Values.executor "CeleryExecutor" }}
     - host: {{- include "flower_url" . | indent 1 }}
       http:
         paths:
-          - path: /
+          - path: /deployments/{{ .Release.Name }}/flower
             backend:
               serviceName: {{ .Release.Name }}-flower
               servicePort: flower-ui
+{{- end }}
 {{- end }}
