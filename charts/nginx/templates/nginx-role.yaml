@@ -51,7 +51,6 @@ rules:
       - get
       - list
       - watch
-  {{- if not $singleNamespace }}
   - apiGroups:
       - networking.k8s.io
     resources:
@@ -60,6 +59,7 @@ rules:
       - get
       - list
       - watch
+  {{- if not $singleNamespace }}
   - apiGroups:
       - ""
     resources:
